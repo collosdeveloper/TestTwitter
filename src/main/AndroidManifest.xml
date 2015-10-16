@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest
+    package="com.daiv.android.twitter"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <application
+        android:name=".data.App"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        <provider
+            android:name=".data.sq_lite.HomeContentProvider"
+            android:authorities="com.daiv.android.twitter.provider"
+            android:exported="true"
+            android:multiprocess="true"/>
+
+        <activity
+            android:name=".ui.MaterialMainActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.TestLight"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name_full"
+            android:theme="@style/Theme.TestLight"/>
+
+        <activity
+            android:name=".ui.compose.ComposeActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.TestLight.Popup"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"/>
+
+        <activity
+            android:name=".ui.BrowserActivity"
+            android:label="@string/app_name_full"
+            android:theme="@style/Theme.TestLight.Popup"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
+            android:name=".ui.PlainTextBrowserActivity"
+            android:label="@string/app_name_full"
+            android:theme="@style/Theme.TestLight.Popup"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".utils.redirects.RedirectToMentions"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.TestLight"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".utils.redirects.RedirectToActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.TestLight"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <service android:name=".services.TestPullNotificationService"/>
+        <service android:name=".services.SendTweet"/>
+        <service android:name=".services.SendQueue"/>
+        <service android:name=".services.CatchupPull"/>
+        <service android:name=".services.StopPull"/>
+
+        <service
+            android:name=".services.PreCacheService"
+            android:exported="true">
+        </service>
+
+        <service android:name=".services.MarkReadService"/>
+        <service android:name=".services.MarkReadSecondAccService"/>
+        <service android:name=".services.ReadInteractionsService"/>
+
+        <service
+            android:name=".services.TimelineRefreshService"
+            android:exported="true">
+        </service>
+
+        <service android:name=".services.WidgetRefreshService"/>
+
+        <service
+            android:name=".services.MentionsRefreshService"
+            android:exported="true">
+        </service>
+
+        <service android:name=".services.SecondMentionsRefreshService"/>
+        <service android:name=".services.ActivityRefreshService"/>
+        <service android:name=".services.SecondActivityRefreshService"/>
+        <service android:name=".services.DirectMessageRefreshService"/>
+        <service android:name=".services.SendScheduledTweet"/>
+        <service android:name=".services.TrimDataService"/>
+
+        <service
+            android:name=".ui.launcher_page.HandleScrollService"
+            android:exported="true">
+        </service>
+
+        <service
+            android:name=".ui.launcher_page.SetAccount"
+            android:exported="true">
+        </service>
+
+        <service
+            android:name=".ui.launcher_page.StartPull"
+            android:exported="true">
+        </service>
+
+        <receiver android:name=".receivers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.NotificationDeleteReceiverOne"
+            android:exported="true"/>
+
+        <receiver
+            android:name=".receivers.NotificationDeleteReceiverTwo"
+            android:exported="true"/>
+
+        <receiver android:name=".receivers.ConnectivityChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.QueueTweets">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.ThemeConfigurationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.daiv.android.SET_THEME"/>
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name=".utils.MySuggestionsProvider"
+            android:authorities="com.daiv.android.MySuggestionsProvider"/>
+
+    </application>
+</manifest>
